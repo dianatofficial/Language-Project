@@ -5,14 +5,12 @@ import { StudentDashboardComponent } from './components/student-dashboard/studen
 import { TeacherDashboardComponent } from './components/teacher-dashboard/teacher-dashboard.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { authGuard } from './guards/auth.guard';
-import { RegisterComponent } from './components/register/register.component';
 import { OptTestComponent } from './components/opt-test/opt-test.component';
 import { ExamDetailsComponent } from './components/exam-details/exam-details.component';
 
 export const APP_ROUTES: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
   { 
     path: 'student-dashboard/:id', 
     component: StudentDashboardComponent,
