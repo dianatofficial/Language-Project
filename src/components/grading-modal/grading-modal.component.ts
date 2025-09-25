@@ -41,6 +41,14 @@ export class GradingModalComponent implements OnInit {
     this.close.emit();
   }
 
+  onScoreChange(score: number | null) {
+    this.currentGrade.update(g => ({...g, narrativeScore: score}));
+  }
+
+  onFeedbackChange(feedback: string | null) {
+    this.currentGrade.update(g => ({...g, narrativeFeedback: feedback}));
+  }
+
   async getAIGradingSuggestion() {
     const student = this.student();
     if (!student?.narrativeText) return;

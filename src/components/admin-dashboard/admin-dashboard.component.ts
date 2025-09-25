@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 
 // Import new components
 import { OverviewComponent } from './overview/overview.component';
@@ -17,7 +16,6 @@ import { ManageExamsComponent } from './manage-exams/manage-exams.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
-    RouterLink,
     OverviewComponent,
     RoadmapComponent,
     ManageTeachersComponent,

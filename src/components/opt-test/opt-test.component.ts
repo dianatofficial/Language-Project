@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit, OnDestroy, effect } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-opt-test',
   templateUrl: './opt-test.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, FormsModule, DecimalPipe]
+  imports: [CommonModule, FormsModule]
 })
 export class OptTestComponent implements OnInit, OnDestroy {
   // FIX: Added explicit type `ActivatedRoute` to ensure correct type inference for the injected route.
