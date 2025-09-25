@@ -1,0 +1,74 @@
+<div class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col">
+    <div class="p-4 border-b flex justify-between items-center bg-slate-50 rounded-t-lg">
+      <h3 class="text-xl font-bold text-slate-800">آزمون Narrative Writing</h3>
+      <button (click)="closeModal()" class="text-slate-400 hover:text-slate-600">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+    <div class="p-6 md:p-8 space-y-6 overflow-y-auto">
+      <div>
+        <h4 class="text-md font-semibold text-slate-700">موضوع:</h4>
+        <div class="p-4 bg-slate-100 rounded-md mt-1 text-base border font-sans text-left" dir="ltr">
+          <p class="font-bold text-lg">Tell us about a difficult journey.</p>
+          <p class="mt-2">Where were you going? Who with? What happened and why was it difficult? What happened in the end?</p>
+          <p class="mt-2 text-sm text-slate-600">We accept stories about all kinds of journeys: road trips, train trips, car journeys, hikes, flights, etc. Write 100-140 words and include as many interesting details as you can.</p>
+        </div>
+      </div>
+      <div>
+         <h4 class="text-md font-semibold text-slate-700">معیار امتیازدهی (مجموعا ۴۰ امتیاز):</h4>
+          <div class="p-3 bg-blue-50 border border-blue-200 text-blue-800 rounded-md mt-1 text-sm">
+              <ul class="list-disc list-inside space-y-1">
+                  <li><span class="font-semibold">محتوا و خلاقیت:</span> پاسخ به موضوع و ارائه داستانی جذاب.</li>
+                  <li><span class="font-semibold">گرامر و ساختار:</span> استفاده صحیح از زمان‌ها و ساختارهای جملات.</li>
+                  <li><span class="font-semibold">دایره لغات:</span> استفاده از کلمات مناسب و متنوع.</li>
+                  <li><span class="font-semibold">انسجام متن:</span> پیوستگی و روان بودن داستان.</li>
+              </ul>
+          </div>
+      </div>
+      <div>
+        <label for="narrativeText" class="text-md font-semibold text-slate-700">پاسخ شما:</label>
+        <textarea 
+          id="narrativeText"
+          [(ngModel)]="narrativeText"
+          rows="10"
+          class="w-full mt-1 p-3 border border-slate-300 rounded-md focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 font-sans text-base leading-relaxed"
+          placeholder="Write your story here..."
+          dir="ltr"
+        ></textarea>
+      </div>
+      @if(aiFeedback()) {
+        <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <h4 class="font-semibold text-blue-800 flex items-center mb-2">
+              <i data-lucide="sparkles" class="w-5 h-5 me-2"></i>
+              <span>بازخورد هوش مصنوعی</span>
+          </h4>
+          <div class="text-blue-700 text-sm whitespace-pre-wrap">{{ aiFeedback() }}</div>
+        </div>
+      }
+    </div>
+    <div class="p-4 border-t flex justify-between items-center bg-slate-50 rounded-b-lg">
+      <button 
+        (click)="getAIFeedback()" 
+        [disabled]="!narrativeText() || isGettingFeedback()"
+        class="inline-flex items-center px-4 py-2 text-sm font-medium text-indigo-700 bg-indigo-100 rounded-lg hover:bg-indigo-200 focus:outline-none disabled:opacity-50 disabled:cursor-wait"
+      >
+        @if(isGettingFeedback()) {
+          <i data-lucide="loader-circle" class="w-4 h-4 me-2 animate-spin"></i>
+          <span>در حال دریافت بازخورد...</span>
+        } @else {
+          <i data-lucide="wand-2" class="w-4 h-4 me-2"></i>
+          <span>دریافت بازخورد هوش مصنوعی</span>
+        }
+      </button>
+      <button 
+        (click)="submitTest()"
+        [disabled]="!narrativeText()"
+        class="inline-flex items-center px-6 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 focus:outline-none disabled:bg-slate-400"
+      >
+        <i data-lucide="send" class="w-4 h-4 me-2"></i>
+        <span>ارسال نهایی</span>
+      </button>
+    </div>
+  </div>
+</div>

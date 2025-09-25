@@ -1,0 +1,199 @@
+<div class="space-y-8">
+  <h1 class="text-3xl font-bold text-slate-900">نمای کلی سیستم</h1>
+  <!-- Stats -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="p-6 bg-white text-slate-800 rounded-xl shadow-lg border border-slate-200 flex items-center justify-between">
+      <div>
+        <div class="text-4xl font-extrabold">{{ teachers().length }}</div>
+        <div class="text-lg text-slate-500">استاد فعال</div>
+      </div>
+      <div class="p-4 bg-blue-100 text-blue-500 rounded-full">
+          <i data-lucide="user-check" class="w-8 h-8"></i>
+      </div>
+    </div>
+    <div class="p-6 bg-white text-slate-800 rounded-xl shadow-lg border border-slate-200 flex items-center justify-between">
+      <div>
+        <div class="text-4xl font-extrabold">{{ students().length }}</div>
+        <div class="text-lg text-slate-500">زبان‌آموز</div>
+      </div>
+      <div class="p-4 bg-green-100 text-green-500 rounded-full">
+          <i data-lucide="users" class="w-8 h-8"></i>
+      </div>
+    </div>
+    <div class="p-6 bg-white text-slate-800 rounded-xl shadow-lg border border-slate-200 flex items-center justify-between">
+      <div>
+        <div class="text-4xl font-extrabold">{{ institutes().length }}</div>
+        <div class="text-lg text-slate-500">موسسه همکار</div>
+      </div>
+      <div class="p-4 bg-indigo-100 text-indigo-500 rounded-full">
+          <i data-lucide="building-2" class="w-8 h-8"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="bg-white p-6 rounded-xl shadow-lg border">
+      <h3 class="text-xl font-bold mb-4 text-slate-800">پراکندگی زبان‌آموزان بر اساس سطح</h3>
+      <div class="space-y-4">
+        @for(item of studentsByLevel(); track item.level) {
+          <div class="flex items-center">
+            <span class="w-12 font-semibold text-slate-600">{{item.level}}</span>
+            <div class="flex-1 bg-slate-200 rounded-full h-6">
+              <div class="bg-blue-500 h-6 rounded-full text-white text-sm flex items-center justify-center" [style.width]="(item.count / studentsByLevelMax()) * 100 + '%'">
+                {{ item.count }}
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-lg border">
+      <h3 class="text-xl font-bold mb-4 text-slate-800">تعداد اساتید در هر شهر</h3>
+        <div class="space-y-4">
+        @for(item of teachersByCity(); track item.city) {
+          <div class="flex items-center">
+            <span class="w-24 font-semibold text-slate-600 truncate">{{item.city}}</span>
+            <div class="flex-1 bg-slate-200 rounded-full h-6">
+              <div class="bg-green-500 h-6 rounded-full text-white text-sm flex items-center justify-center" [style.width]="(item.count / teachersByCityMax()) * 100 + '%'">
+                {{ item.count }}
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+  
+  <!-- Data Export Section -->
+  <div class="bg-white rounded-xl shadow-lg border p-6">
+    <h2 class="text-xl font-bold text-slate-800 mb-4">خروجی داده‌ها</h2>
+    <p class="text-sm text-slate-600 mb-6">از این بخش می‌توانید داده‌های اصلی سیستم را در فرمت‌های CSV یا Excel (XLSX) دریافت کنید. فایل‌های CSV با نرم‌افزارهایی مانند Excel سازگار هستند.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Test Results Export -->
+      <div class="p-4 border rounded-lg bg-slate-50 flex flex-col">
+        <h3 class="font-semibold text-slate-700">نتایج کامل آزمون‌ها</h3>
+        <p class="text-sm text-slate-500 mt-1 flex-grow">خروجی تمام نتایج آزمون‌های OPT و Narrative برای همه زبان‌آموزان.</p>
+        <div class="mt-4 flex items-center space-s-2">
+          <button (click)="exportAllTestResults('csv')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-green-600 rounded-lg hover:bg-green-700">
+            <i data-lucide="sheet" class="w-4 h-4 me-1.5"></i>
+            <span>CSV</span>
+          </button>
+          <button (click)="exportAllTestResults('xlsx')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4 me-1.5"></i>
+            <span>Excel</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Students Export -->
+      <div class="p-4 border rounded-lg bg-slate-50 flex flex-col">
+        <h3 class="font-semibold text-slate-700">زبان‌آموزان</h3>
+        <p class="text-sm text-slate-500 mt-1 flex-grow">خروجی فهرست کامل زبان‌آموزان همراه با اطلاعات پروفایل و وضعیت پژوهشی آنها.</p>
+        <div class="mt-4 flex items-center space-s-2">
+          <button (click)="exportAllStudents('csv')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-green-600 rounded-lg hover:bg-green-700">
+             <i data-lucide="sheet" class="w-4 h-4 me-1.5"></i>
+            <span>CSV</span>
+          </button>
+          <button (click)="exportAllStudents('xlsx')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4 me-1.5"></i>
+            <span>Excel</span>
+          </button>
+          <button (click)="openExportModal()" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-slate-600 rounded-lg hover:bg-slate-700">
+            <i data-lucide="settings-2" class="w-4 h-4 me-1.5"></i>
+            <span>سفارشی</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Teachers Export -->
+      <div class="p-4 border rounded-lg bg-slate-50 flex flex-col">
+        <h3 class="font-semibold text-slate-700">اساتید</h3>
+        <p class="text-sm text-slate-500 mt-1 flex-grow">خروجی فهرست کامل اساتید همراه با اطلاعات پروفایل و موسسه مربوطه.</p>
+        <div class="mt-4 flex items-center space-s-2">
+          <button (click)="exportAllTeachers('csv')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-green-600 rounded-lg hover:bg-green-700">
+             <i data-lucide="sheet" class="w-4 h-4 me-1.5"></i>
+            <span>CSV</span>
+          </button>
+          <button (click)="exportAllTeachers('xlsx')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4 me-1.5"></i>
+            <span>Excel</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Exams Export -->
+      <div class="p-4 border rounded-lg bg-slate-50 flex flex-col">
+        <h3 class="font-semibold text-slate-700">آزمون‌ها</h3>
+        <p class="text-sm text-slate-500 mt-1 flex-grow">خروجی فهرست کامل آزمون‌های تعریف شده در سیستم.</p>
+        <div class="mt-4 flex items-center space-s-2">
+          <button (click)="exportAllExams('csv')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-green-600 rounded-lg hover:bg-green-700">
+             <i data-lucide="sheet" class="w-4 h-4 me-1.5"></i>
+            <span>CSV</span>
+          </button>
+          <button (click)="exportAllExams('xlsx')" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4 me-1.5"></i>
+            <span>Excel</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Detailed Export Modal -->
+@if (showExportModal()) {
+  <div class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col">
+      <div class="p-4 border-b flex justify-between items-center bg-slate-50 rounded-t-lg">
+        <h3 class="text-xl font-bold text-slate-800">خروجی سفارشی زبان‌آموزان</h3>
+        <button (click)="showExportModal.set(false)" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div class="p-6 md:p-8 space-y-6 overflow-y-auto">
+        <!-- Filter Section -->
+        <div>
+          <label for="stageFilter" class="block text-sm font-medium text-slate-700 mb-1">فیلتر بر اساس مرحله پژوهش</label>
+          <select id="stageFilter" [(ngModel)]="exportFilter().stage" (ngModelChange)="exportFilter.set({stage: $event})" class="w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+            <option value="all">همه مراحل</option>
+            <option value="Preliminary">مقدماتی (Preliminary)</option>
+            <option value="Advanced">پیشرفته (Advanced)</option>
+            <option value="Completed">تکمیل شده (Completed)</option>
+          </select>
+        </div>
+        
+        <!-- Field Selection -->
+        <div>
+          <h4 class="text-md font-semibold text-slate-800 mb-2">انتخاب ستون‌ها برای خروجی</h4>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4 p-4 border rounded-lg bg-slate-50">
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().studentId" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>شناسه زبان‌آموز</span></label>
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().studentName" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>نام زبان‌آموز</span></label>
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().age" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>سن</span></label>
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().city" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>شهر</span></label>
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().level" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>سطح</span></label>
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().teacherName" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>کد استاد</span></label>
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().instituteName" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>کد موسسه</span></label>
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().stage" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>مرحله پژوهش</span></label>
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().treatmentGroup" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>گروه درمانی</span></label>
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().optExamTitle" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>عنوان آزمون OPT</span></label>
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().optScore" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>نمره OPT</span></label>
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().narrativeScore" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>نمره Narrative</span></label>
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().optAnswers" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>پاسخ‌های OPT (JSON)</span></label>
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().narrativeText" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>متن Narrative</span></label>
+            <label class="flex items-center"><input type="checkbox" [(ngModel)]="exportOptions().narrativeFeedback" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 me-2"><span>بازخورد Narrative</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 border-t flex justify-end bg-slate-50 rounded-b-lg space-s-3">
+        <button type="button" (click)="showExportModal.set(false)" class="px-6 py-2 text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 font-semibold">لغو</button>
+        <button (click)="exportDetailedResults()" class="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 font-semibold inline-flex items-center">
+          <i data-lucide="sheet" class="w-4 h-4 me-2"></i>
+          <span>ایجاد خروجی (CSV)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+}

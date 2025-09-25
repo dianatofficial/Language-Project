@@ -1,0 +1,151 @@
+<div class="bg-white rounded-xl shadow-lg overflow-hidden border">
+  <div class="p-4 border-b flex justify-between items-center">
+    <h2 class="text-xl font-bold text-slate-800">لیست آزمون‌ها</h2>
+    <button (click)="openAddExamModal()" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+        <i data-lucide="plus" class="w-4 h-4 me-2"></i>
+        <span>افزودن آزمون</span>
+    </button>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm text-right text-slate-500">
+      <thead class="text-xs text-slate-700 uppercase bg-slate-100">
+        <tr>
+          <th class="px-6 py-3">عنوان</th>
+          <th class="px-6 py-3">نوع</th>
+          <th class="px-6 py-3">وضعیت</th>
+          <th class="px-6 py-3">موسسه</th>
+          <th class="px-6 py-3">مرحله</th>
+          <th class="px-6 py-3">عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (exam of paginatedExams(); track exam.id) {
+        <tr class="bg-white border-b hover:bg-slate-50">
+          <td class="px-6 py-3 font-medium text-slate-900">{{ exam.title }}</td>
+          <td class="px-6 py-3">{{ exam.type }}</td>
+          <td class="px-6 py-3">
+              <span class="px-2 py-1 text-xs font-semibold rounded-full" [class.bg-green-100]="exam.status === 'Active'" [class.text-green-800]="exam.status === 'Active'" [class.bg-slate-100]="exam.status === 'Draft'" [class.text-slate-800]="exam.status === 'Draft'" [class.bg-red-100]="exam.status === 'Archived'" [class.text-red-800]="exam.status === 'Archived'">
+                  {{ exam.status }}
+              </span>
+          </td>
+          <td class="px-6 py-3">{{ getInstituteName(exam.instituteId) }}</td>
+          <td class="px-6 py-3">{{ exam.stage }}</td>
+          <td class="px-6 py-3 flex items-center space-s-2">
+              <a [routerLink]="['/admin-dashboard/exam', exam.id]" class="p-2 text-slate-500 hover:text-indigo-600 rounded-full hover:bg-slate-100" title="مشاهده جزئیات">
+                <i data-lucide="eye" class="w-4 h-4"></i>
+              </a>
+              <button (click)="openEditExamModal(exam)" class="p-2 text-slate-500 hover:text-blue-600 rounded-full hover:bg-slate-100" title="ویرایش">
+                <i data-lucide="file-pen-line" class="w-4 h-4"></i>
+              </button>
+              <button (click)="showDeleteConfirm.set({type: 'exam', id: exam.id, name: exam.title})" class="p-2 text-slate-500 hover:text-red-600 rounded-full hover:bg-slate-100" title="حذف">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+          </td>
+        </tr>
+        } @empty {
+          <tr>
+              <td colspan="6" class="px-6 py-10 text-center text-slate-500">
+                هیچ آزمونی در سیستم ثبت نشده است.
+              </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+    <app-pagination
+    [currentPage]="currentPage()"
+    [totalItems]="exams().length"
+    [itemsPerPage]="itemsPerPage()"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
+</div>
+
+<!-- Add/Edit Exam Modal -->
+@if (showExamModal()) {
+  <div class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+        <div class="p-4 border-b flex justify-between items-center bg-slate-50 rounded-t-lg">
+            <h3 class="text-xl font-bold text-slate-800">{{ isEditMode() ? 'ویرایش آزمون' : 'افزودن آزمون جدید' }}</h3>
+            <button (click)="showExamModal.set(false)" class="text-slate-400 hover:text-slate-600">
+            <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <div class="p-6 md:p-8 space-y-6 overflow-y-auto">
+            <form #examForm="ngForm" (ngSubmit)="saveExam()">
+                <div class="space-y-4">
+                    <div>
+                        <label for="examTitle" class="block text-sm font-medium text-slate-700">عنوان آزمون</label>
+                        <input type="text" id="examTitle" name="examTitle" [(ngModel)]="editableExam().title" required class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="examType" class="block text-sm font-medium text-slate-700">نوع آزمون</label>
+                            <select id="examType" name="examType" [(ngModel)]="editableExam().type" required class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="OPT">OPT</option>
+                                <option value="Narrative">Narrative</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="examStatus" class="block text-sm font-medium text-slate-700">وضعیت</label>
+                            <select id="examStatus" name="examStatus" [(ngModel)]="editableExam().status" required class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="Draft">پیش‌نویس</option>
+                                <option value="Active">فعال</option>
+                                <option value="Archived">بایگانی شده</option>
+                            </select>
+                        </div>
+                    </div>
+                      <div>
+                        <label for="examInstitute" class="block text-sm font-medium text-slate-700">موسسه (اختیاری)</label>
+                        <select id="examInstitute" name="examInstitute" [ngModel]="editableExam().instituteId" (ngModelChange)="onExamInstituteChange($event)" class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option [ngValue]="null">همه موسسات (سراسری)</option>
+                            @for(institute of institutes(); track institute.id) {
+                                <option [value]="institute.id">{{institute.name}}</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                          <label for="examDesc" class="block text-sm font-medium text-slate-700">توضیحات</label>
+                          <textarea id="examDesc" name="examDesc" rows="4" [(ngModel)]="editableExam().description" required class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                    </div>
+                      <div>
+                        <label for="examStage" class="block text-sm font-medium text-slate-700">مرحله پژوهش</label>
+                        <select id="examStage" name="examStage" [(ngModel)]="editableExam().stage" required class="mt-1 w-full px-3 py-2 border border-slate-300 rounded-md bg-white focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="Preliminary">مقدماتی</option>
+                            <option value="Advanced">پیشرفته</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="p-4 border-t flex justify-end bg-slate-50 rounded-b-lg space-s-3">
+            <button type="button" (click)="showExamModal.set(false)" class="px-6 py-2 text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 font-semibold">لغو</button>
+            <button (click)="saveExam()" [disabled]="examForm.invalid" class="px-6 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:bg-slate-400 font-semibold">ذخیره</button>
+        </div>
+    </div>
+  </div>
+}
+
+<!-- Delete Confirmation Modal -->
+@if(showDeleteConfirm(); as itemToDelete) {
+    <div class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="p-6 text-center">
+                <div class="flex justify-center mb-4">
+                    <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
+                        <i data-lucide="alert-triangle" class="w-10 h-10 text-red-600"></i>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">آیا مطمئن هستید؟</h3>
+                <p class="mt-2 text-slate-600">
+                    آیا از حذف آزمون
+                    <span class="font-bold">"{{ itemToDelete.name }}"</span>
+                      اطمینان دارید؟ این عمل قابل بازگشت نیست.
+                </p>
+            </div>
+            <div class="px-6 py-4 bg-slate-50 flex justify-center space-s-4 rounded-b-lg">
+                <button (click)="showDeleteConfirm.set(null)" class="px-6 py-2 font-semibold text-slate-700 bg-white border border-slate-300 hover:bg-slate-100 rounded-lg">انصراف</button>
+                <button (click)="confirmDelete(itemToDelete.type, itemToDelete.id)" class="px-6 py-2 font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg">بله، حذف کن</button>
+            </div>
+        </div>
+    </div>
+}

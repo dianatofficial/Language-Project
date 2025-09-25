@@ -1,0 +1,173 @@
+@if (isLoading()) {
+  <div class="space-y-8 animate-pulse">
+    <!-- Profile Header Skeleton -->
+    <div class="p-6 bg-white rounded-lg shadow-md flex items-center space-s-6">
+      <div class="w-24 h-24 rounded-full bg-slate-200"></div>
+      <div class="flex-1 space-y-3">
+        <div class="h-6 bg-slate-200 rounded w-1/2"></div>
+        <div class="h-4 bg-slate-200 rounded w-1/3"></div>
+        <div class="h-4 bg-slate-200 rounded w-1/4"></div>
+      </div>
+    </div>
+    <!-- Tests Skeleton -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200 space-y-4">
+        <div class="h-6 bg-slate-200 rounded w-3/4 mb-4"></div>
+        <div class="h-12 bg-slate-200 rounded w-1/2 mx-auto"></div>
+        <div class="h-4 bg-slate-200 rounded w-1/2 mx-auto mt-4"></div>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200 space-y-4">
+        <div class="h-6 bg-slate-200 rounded w-3/4 mb-4"></div>
+        <div class="h-12 bg-slate-200 rounded w-1/2 mx-auto"></div>
+        <div class="h-4 bg-slate-200 rounded w-1/2 mx-auto mt-4"></div>
+      </div>
+    </div>
+  </div>
+} @else {
+  @if (student(); as student) {
+    <div class="space-y-8">
+      <!-- Profile Header -->
+      <div class="p-6 bg-white rounded-lg shadow-md flex items-center space-s-8">
+        <div class="w-24 h-24 rounded-full border-4 border-indigo-300 bg-indigo-100 flex items-center justify-center">
+            <i data-lucide="user-round" class="w-12 h-12 text-indigo-600"></i>
+        </div>
+        <div>
+          <h1 class="text-3xl font-bold text-slate-900">{{ student.name }}</h1>
+          <p class="text-slate-600">{{ student.age }} ساله از {{ student.city }}</p>
+          <p class="text-slate-600">استاد: {{ teacher()?.name || 'نامشخص' }}</p>
+          <p class="text-slate-600">موسسه: {{ institute()?.name || 'نامشخص' }}</p>
+          <span class="mt-2 inline-block px-3 py-1 text-sm font-semibold text-green-800 bg-green-100 rounded-full">
+            سطح فعلی: {{ student.level }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Final Result Card -->
+      @if (finalResult(); as result) {
+        <div class="p-6 rounded-lg shadow-md border" [class]="result.passed ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200'">
+          <div class="flex items-start">
+            <div class="flex-shrink-0" [class]="result.passed ? 'text-green-500' : 'text-yellow-500'">
+                <i [attr.data-lucide]="result.passed ? 'check-circle' : 'alert-circle'" class="w-8 h-8"></i>
+            </div>
+            <div class="ms-4">
+              <h2 class="text-2xl font-bold" [class]="result.passed ? 'text-green-800' : 'text-yellow-800'">نتیجه نهایی تعیین سطح</h2>
+              <div class="mt-2 text-sm" [class]="result.passed ? 'text-green-700' : 'text-yellow-700'">
+                  <p class="flex items-center space-s-4">
+                    <span>امتیاز آزمون OPT: <span class="font-bold">{{ student.optScore }} / {{ optExamQuestionsCount() }}</span></span>
+                    <span>امتیاز آزمون Narrative: <span class="font-bold">{{ student.narrativeScore }} / 40</span></span>
+                  </p>
+                   <p class="text-lg mt-2">
+                    مجموع امتیاز شما: <span class="font-extrabold text-2xl">{{ result.totalScore }} / 100</span>
+                  </p>
+                  @if (result.passed) {
+                    <p class="mt-2 font-semibold">تبریک! شما مجوز حضور در مرحله بعد پژوهش را کسب کرده‌اید.</p>
+                  } @else {
+                    <p class="mt-2 font-semibold">برای کسب مجوز حضور در مرحله بعد، نیاز به کسب حداقل امتیاز ۷۰ دارید.</p>
+                  }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+  
+      <!-- Announcements -->
+       @if(!finalResult()) {
+          <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex items-start">
+            <div class="flex-shrink-0 text-yellow-500">
+                <i data-lucide="megaphone" class="w-6 h-6"></i>
+            </div>
+            <div class="ms-3">
+                <h2 class="text-lg font-semibold text-yellow-800">
+                  اطلاعیه مهم
+                </h2>
+                <p class="mt-1 text-sm text-yellow-700">موضوع جدید آزمون Narrative Writing مشخص شده است. لطفا هر دو آزمون را در اسرع وقت تکمیل نمایید تا سطح شما نهایی شود.</p>
+            </div>
+          </div>
+       }
+  
+      <!-- Tests Section -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Narrative Writing Test -->
+        <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
+          <h2 class="text-2xl font-semibold text-slate-800 mb-4 flex items-center">
+            <i data-lucide="file-text" class="w-6 h-6 me-3 text-blue-500"></i>
+            <span>آزمون Narrative Writing</span>
+          </h2>
+          <div class="flex-grow flex flex-col justify-center">
+            @if (student.narrativeScore !== null) {
+              <div class="text-center">
+                <p class="text-lg text-slate-600 mb-2">نمره شما:</p>
+                <p class="text-5xl font-bold text-blue-600">{{ student.narrativeScore }} / 40</p>
+                <p class="mt-4 text-green-600">آزمون شما تصحیح شده است.</p>
+              </div>
+              @if(student.narrativeFeedback) {
+                <div class="mt-4 p-4 bg-slate-50 rounded-lg border">
+                    <p class="font-semibold text-slate-700">بازخورد استاد:</p>
+                    <p class="text-slate-600 whitespace-pre-wrap">{{student.narrativeFeedback}}</p>
+                </div>
+              }
+            } @else if (student.narrativeText) {
+                <div class="text-center">
+                    <i data-lucide="loader-circle" class="w-12 h-12 text-slate-400 mx-auto animate-spin"></i>
+                    <p class="text-slate-500 mt-4">آزمون شما ارسال شده و منتظر تصحیح توسط استاد است.</p>
+                </div>
+            } @else {
+              <div class="text-center">
+                <p class="text-slate-500 mb-4">شما هنوز در این آزمون شرکت نکرده‌اید.</p>
+                <button (click)="openNarrativeTest()" class="px-6 py-2 font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
+                  شروع آزمون
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+  
+        <!-- OPT Test -->
+        <div class="bg-white p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
+          <h2 class="text-2xl font-semibold text-slate-800 mb-4 flex items-center">
+            <i data-lucide="clipboard-check" class="w-6 h-6 me-3 text-indigo-500"></i>
+            <span>آزمون OPT</span>
+          </h2>
+          <div class="flex-grow flex flex-col justify-center">
+            @if (student.optScore !== null) {
+              <div class="text-center">
+                <p class="text-lg text-slate-600 mb-2">نمره شما:</p>
+                <p class="text-5xl font-bold text-indigo-600">{{ student.optScore }} / {{ optExamQuestionsCount() }}</p>
+                <p class="mt-4 text-green-600">آزمون شما تکمیل شده است.</p>
+              </div>
+            } @else {
+              @if(activeOptExam(); as exam) {
+                <div class="text-center">
+                  <p class="text-slate-500 mb-4">آزمون تعیین سطح برای شما فعال است.</p>
+                  <a [routerLink]="['/student-dashboard', student.id, 'take-test', exam.id]" class="inline-block px-6 py-2 font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
+                    شروع آزمون
+                  </a>
+                </div>
+              } @else {
+                <div class="text-center">
+                  <p class="text-slate-500 mb-4">در حال حاضر آزمون فعالی برای موسسه شما وجود ندارد.</p>
+                  <button disabled class="px-6 py-2 font-semibold text-white bg-indigo-300 rounded-lg cursor-not-allowed">
+                    ناموجود
+                  </button>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="text-center p-10 bg-white rounded-lg shadow-md">
+      <div class="flex justify-center mb-4">
+        <i data-lucide="alert-triangle" class="w-12 h-12 text-red-500"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-red-600">خطا</h2>
+      <p class="mt-4 text-slate-700">زبان آموز با شناسه مورد نظر یافت نشد.</p>
+    </div>
+  }
+}
+
+<!-- Narrative Test Modal -->
+@if(showNarrativeTestModal() && student()) {
+  <app-narrative-test-modal [student]="student()!" (close)="showNarrativeTestModal.set(false)"></app-narrative-test-modal>
+}

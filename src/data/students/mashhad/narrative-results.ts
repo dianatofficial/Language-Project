@@ -1,0 +1,29 @@
+import { StudentNarrativeResult } from '../../../models/user.model';
+
+/**
+ * انبار داده تخصصی برای نتایج آزمون نوشتاری (Narrative) زبان‌آموزان مشهد.
+ * این فایل به صورت تفکیک‌شده، فقط داده‌های مربوط به این آزمون را نگهداری می‌کند
+ * تا با تفکیک داده‌ها، مقیاس‌پذیری و مدیریت پروژه بهبود یابد.
+ */
+export const MASHHAD_NARRATIVE_RESULTS: StudentNarrativeResult[] = [
+  { studentId: 4, score: 18, text: "I went to a new planet. It was red. I saw aliens. They were friendly. We played games. It was fun. I want to go back.", feedback: " داستان خوبی بود! سعی کن از کلمات توصیفی بیشتری استفاده کنی تا خواننده بهتر بتواند سیاره را تصور کند." },
+  { studentId: 401, score: 16, text: "I go to Haram. It was very crowd. The journey difficult.", feedback: "داستان کوتاهی است. به یاد داشته باش که برای گذشته از 'went' استفاده کنی و برای صفت از 'crowded'. تلاش خوبی بود!" },
+  { studentId: 402, score: 23, text: "My journey to Torghabeh was difficult. The bus was very full of people. I stand all the way. It was a hot day.", feedback: "داستان خوبی است و به خوبی مشکل را توصیف می‌کند. شکل گذشته فعل 'stand'، 'stood' است. به تلاش خود ادامه بده." },
+  { studentId: 403, score: 29, text: "A difficult journey for me was trying to find a specific shop in the old bazaar. It was very big and I lost my way several times. I had to ask for directions from shopkeepers. It was a long journey but I found what I wanted.", feedback: "داستان بسیار ملموسی است. شما به خوبی توانسته‌اید مشکل و راه‌حل آن را توضیح دهید. ساختار و گرامر شما خوب است." },
+  { studentId: 404, score: 35, text: "The journey to my university exam was difficult due to an unexpected protest that blocked the main streets. I had to leave the taxi and run for about 20 minutes to get there on time. It was stressful but I made it.", feedback: "داستان هیجان‌انگیز و خوش‌نوشته‌ای است. دایره واژگان شما (unexpected protest, stressful) بسیار مناسب است و به خوبی تنش موقعیت را منتقل می‌کند." },
+  { studentId: 405, score: 24, text: "I went to my friend's house. The journey was difficult because I take the wrong bus. I was late for the party. My friend was not angry.", feedback: "داستان خوبی است و نتیجه آن را هم بیان کرده‌ای. شکل گذشته فعل 'take'، 'took' است. به تمرین ادامه بده." },
+  { studentId: 406, score: 28, text: "My family and I had a difficult journey last year. We were driving to another city and our car had a problem. We had to wait for a mechanic for three hours. It was very boring.", feedback: "یک داستان کلاسیک از مشکلات سفر که به خوبی روایت شده است. گرامر شما صحیح است." },
+  { studentId: 407, score: 26, text: "The journey to the top of the mountain was difficult. It was very steep and I was tired. But the view of the city was very beautiful.", feedback: "داستان خوبی است که در آن چالش و پاداش در کنار هم قرار دارند. می‌توانید از کلمات متنوع‌تری برای توصیف کوه و منظره استفاده کنید." },
+  { studentId: 408, score: 32, text: 'The journey to the Imam Reza shrine on a religious holiday was very difficult. It was incredibly crowded, and it was hard to move. It was a spiritual journey, but also very tiring.', feedback: 'یک جمله شروع عالی! برای تبدیل آن به یک داستان کامل، می‌توانید توضیح دهید که به خاطر برف چه اتفاقاتی افتاد و شما چه کردید.' },
+  { studentId: 409, score: 20, text: "My journey to the park was difficult. It was rain. I was wet.", feedback: "Good sentences. Remember, in English we say 'It was raining'." },
+  { studentId: 410, score: 28, text: "I had a trip to the mountain. The journey was difficult because my bag was very heavy. I carry it for three hours. It was tiring but the view was nice.", feedback: "Good story! The past tense of 'carry' is 'carried'." },
+  { studentId: 411, score: 25, text: "I was on a journey to find my lost dog. I walk for hours in my neighborhood. It was difficult because I was very worried. Finally, a kind man found him and called me.", feedback: "Wonderful story. Remember to use 'walked' for the past tense." },
+  { studentId: 412, score: 24, text: "The journey to my friend's wedding was very difficult. There was a huge traffic jam and we were stuck for almost four hours. We were afraid we would miss the ceremony, but luckily we arrived just in time.", feedback: "This is a very common problem! You described it well." },
+  { studentId: 413, score: 30, text: "The most difficult journey I had was a long hike in the forest. We lost the path and had to use a compass to find our way back. It was a bit scary, but also an exciting adventure.", feedback: "Excellent storytelling." },
+  { studentId: 414, score: 35, text: "I think the journey of learning a new language is a difficult one. There are many grammar rules and vocabulary to memorize. However, the feeling of being able to communicate with people from other cultures makes it all worthwhile.", feedback: "A very thoughtful and creative interpretation of the topic. Well done." },
+  { studentId: 415, score: 37, text: "My journey through a creative block while painting was incredibly arduous. It felt like navigating a desert with no inspiration in sight. Overcoming it required a disciplined shift in perspective and a return to fundamental practices.", feedback: "Superb use of metaphor and advanced vocabulary." },
+  { studentId: 416, score: 36, text: 'The journey to run a marathon was difficult but rewarding.', feedback: 'Well done.' },
+  { studentId: 417, score: 38, text: 'Navigating the complexities of a new corporate culture was a difficult journey.', feedback: 'Excellent.' },
+  { studentId: 418, score: 39, text: 'The journey of parenthood is the most difficult and rewarding one.', feedback: 'A profound thought.' },
+  { studentId: 419, score: 37, text: 'My difficult journey was a solo backpacking trip across Europe.', feedback: 'Sounds amazing.' },
+];

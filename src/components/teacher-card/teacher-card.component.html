@@ -1,0 +1,22 @@
+<div class="bg-white rounded-xl shadow-lg overflow-hidden h-full flex flex-col group transition-all duration-300 border border-slate-200 hover:shadow-2xl hover:border-indigo-300">
+  <div class="p-6">
+    <div class="flex items-start space-s-4">
+      <div class="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0">
+        <i data-lucide="user" class="w-12 h-12 text-indigo-500"></i>
+      </div>
+      <div class="flex-1">
+        <h3 class="text-xl font-bold text-slate-900">{{ teacher().name }}</h3>
+        <p class="text-sm text-slate-500 mt-1">{{ teacher().age }} ساله از {{ teacher().city }}</p>
+         <span class="mt-2 inline-block px-3 py-1 text-xs font-semibold text-indigo-800 bg-indigo-100 rounded-full">{{ teacher().personality }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="px-6 pb-6 pt-4 mt-auto border-t border-slate-200 space-y-3">
+    <p class="text-slate-700 text-sm">
+      <span class="font-semibold">موسسه:</span> {{ instituteName() }}
+    </p>
+    <p class="text-slate-600 text-sm leading-relaxed">
+      {{ teacher().bio }}
+    </p>
+  </div>
+</div>
